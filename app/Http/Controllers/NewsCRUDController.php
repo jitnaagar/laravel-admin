@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 class NewsCRUDController extends Controller
 {
 /**
@@ -33,7 +35,7 @@ public function store(Request $request)
 {
 $request->validate([
 'title' => 'required',
-'slug' => 'required',
+'slug' => ['required', 'unique:news'],
 'description' => 'required'
 ]);
 
@@ -77,7 +79,7 @@ public function update(Request $request, $id)
 {
 $request->validate([
 'title' => 'required',
-'slug' => 'required',
+'slug' => ['required', Rule::unique('news')->ignore($id)],
 'description' => 'required',
 ]);
 $News = News::find($id);
